@@ -18,22 +18,21 @@ season = 2001
 
 insert into players
 with yesterday as (
-    select 
-        *
-    from
-    	players p
-    where
-    	current_season = 1999
+select *
+from
+	players p
+where
+	current_season = 1995
 ),
 
 
 today as (
-    select
-    	*
-    from
-    	player_seasons ps
-    where
-    	season = 2000
+select
+	*
+from
+	player_seasons ps
+where
+	season = 1996
 )
 
 select
@@ -53,8 +52,25 @@ select
 				array[row(t.season,t.gp,t.pts,t.reb,t.ast)::season_stats]
 		else y.season_stats
 	end as season_stats,
+	
+	case when t.season is not null then
+		case when t.pts > 20 then 'star'
+			 when t.pts > 15 then 'good'
+			 when t.pts > 10 then 'average'
+			 else 'bad'
+		end::scoring_class
+	else y.scoring_class end as scoring_class,
+	
+	case when t.season is not null then 0
+		else y.years_since_last_season + 1
+		end as years_since_last_season,
+
 	coalesce (t.season, y.current_season + 1) as current_season
 from
 	today t full outer join yesterday y
 on
 	t.player_name = y.player_name;
+
+-- select * from players 
+-- where player_name = 'Michael Jordan' 
+-- where current_season = 2001;
