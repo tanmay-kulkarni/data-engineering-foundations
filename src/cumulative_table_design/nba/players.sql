@@ -9,7 +9,7 @@ create table players (
         season_stats season_stats[],
         scoring_class scoring_class,
         years_since_last_season INT,
-        is_active boolean,
         current_season INT,
+        is_active boolean,
         primary key(player_name, current_season)
 );
