@@ -16,6 +16,6 @@ create table actors_history_scd (
 	current_year int,
 	start_year int,
 	end_year int,
-	primary key (actor, start_year)
+	primary key (actor, start_year, current_year)
 )
 ;
